@@ -1,0 +1,73 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: webwright main (bilibili 默认)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "webwright.run.cli",
+            "args": [
+                "main",
+                "--task", "打开 bilibili.com，搜索 '老王在中国' 这个Up主的播放量最高的视频",
+                "--task-id", "bilibili",
+                "--start-url", "https://www.bilibili.com/",
+                "--config", "base.yaml",
+                "--config", "custom_openrouter.yaml",
+                "--output-dir", "outputs/default",
+                "--debug"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/src",
+                "OPENAI_API_KEY": "dummy",
+                "OPENROUTER_API_KEY": "sk-858c55a7eae046fa89274b7aaee8d5cc"
+            },
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Python: webwright main (自定义任务)",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "webwright.run.cli",
+            "args": [
+                "main",
+                "--task", "",
+                "--start-url", "https://www.example.com/",
+                "--config", "base.yaml",
+                "--config", "custom_openrouter.yaml",
+                "--output-dir", "outputs/default",
+                "--debug"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/src"
+            },
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Python: webwright doctor",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "webwright.run.cli",
+            "args": ["doctor"],
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/src"
+            },
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Python: Attach (远程调试)",
+            "type": "debugpy",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 5678
+            },
+            "justMyCode": true
+        }
+    ]
+}
