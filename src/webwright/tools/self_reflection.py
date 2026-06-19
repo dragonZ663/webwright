@@ -250,6 +250,11 @@ def _model_endpoint(model_client: Any) -> str:
 # ---------------------------------------------------------------------------
 
 def _parse_image_judge_response(response: str) -> tuple[str, int]:
+    """ 
+    逐图评分解析：
+    - 优先正则匹配 Score: 1-5 和 Reasoning: <text> 标签行
+    - 如果匹配失败，尝试解析 JSON 格式（兼容模型输出 JSON 的情况）
+    """
     score_match = re.search(r"(?is)\bscore\b[^1-5]*([1-5])\b", response)
     reasoning_match = re.search(
         r"(?is)(?:\*\*?\s*reasoning\s*\*\*?|reasoning)\s*[:\-]\s*"
@@ -281,6 +286,13 @@ def _parse_image_judge_response(response: str) -> tuple[str, int]:
 
 
 def _parse_final_verdict(response: str) -> int | None:
+    """ 
+    最终裁判解析：
+    - 找最后一个 Status: 标签
+    - 后面跟 success → predicted_label: 1
+    - 后面跟 failure → predicted_label: 0
+    - 找不到 / 格式错 → predicted_label: null（按 FAIL 处理）
+    """
     matches = list(re.finditer(r"(?i)status:\s*", response))
     if not matches:
         return None
@@ -304,6 +316,14 @@ async def _judge_one_image(
     max_new_tokens: int,
     max_parse_retries: int,
 ) -> dict[str, Any]:
+    """ 
+    对每张截图并发执行一次模型调用：
+
+    1. 把 image_judge_system_prompt + image_judge_user_prompt + 图片发给模型
+    2. 解析返回的 Score: 1-5 和 Reasoning: <文本>
+    3. 如果解析失败，最多重试 3 次（DEFAULT_IMAGE_PARSE_MAX_RETRIES = 3）
+    4. 重试仍失败则标记 ParseFailed: true，Score 为 0
+    """
     user_content = [
         text_part(image_judge_user_prompt),
         _high_detail_image_part_from_path(image_path),
@@ -393,6 +413,7 @@ async def run_self_reflection_async(
     endpoint = _model_endpoint(model_client)
 
     if images:
+        # 使用 asyncio.gather 并发处理所有图片，不互相等待
         per_image = await asyncio.gather(
             *(
                 _judge_one_image(
@@ -412,10 +433,12 @@ async def run_self_reflection_async(
     image_paths = [record["image_path"] for record in per_image]
     reasonings = [record["Reasoning"] or "" for record in per_image]
 
+    # 把阶段 1 所有 Reasoning 拼接成一个文本块
     reasonings_block = "\n".join(
         f"{i + 1}. {text}" for i, text in enumerate(reasonings)
     )
 
+    # 通过 {image_reasonings} 和 {action_history_log} 嵌入到 final_verdict_user_prompt 模板中
     final_user_text = _render_final_verdict_user_prompt(
         final_verdict_user_prompt,
         image_reasonings=reasonings_block,
@@ -426,6 +449,7 @@ async def run_self_reflection_async(
     for path_str in image_paths:
         user_content.append(_high_detail_image_part_from_path(Path(path_str)))
 
+    # 连同所有截图再次调用模型
     final_response = await asyncio.to_thread(
         _call_model,
         model_client=model_client,
