@@ -8,5 +8,11 @@
 
 model:
   model_class: openrouter
-  model_name: qwen3.7-plus
+
+  # Deepseek
+  # model_name: deepseek-v4-pro
+  # openrouter_endpoint: https://api.deepseek.com/chat/completions
+
+  # Qwen
+  model_name: qwen3.5-35b-a3b
   openrouter_endpoint: https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions
