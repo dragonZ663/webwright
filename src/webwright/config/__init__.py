@@ -33,7 +33,7 @@ def _resolve_config_path(spec: str) -> Path | None:
 def get_config_from_spec(spec: str) -> dict[str, Any]:
     resolved_path = _resolve_config_path(spec)
     if resolved_path is not None:
-        loaded = yaml.safe_load(resolved_path.read_text())
+        loaded = yaml.safe_load(resolved_path.read_text(encoding="utf-8"))
         return loaded or {}
 
     if "=" not in spec:

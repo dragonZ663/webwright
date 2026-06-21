@@ -26,6 +26,13 @@ _CHROMIUM_EXECUTABLE_CANDIDATES = (
     "~/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     "~/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    # Windows
+    "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+    "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+    os.path.expandvars("%LOCALAPPDATA%\\Google\\Chrome\\Application\\chrome.exe"),
+    os.path.expandvars("%LOCALAPPDATA%\\Microsoft\\Edge\\Application\\msedge.exe"),
+    # Linux
     "google-chrome",
     "google-chrome-stable",
     "chromium-browser",

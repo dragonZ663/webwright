@@ -8,20 +8,18 @@
             "module": "webwright.run.cli",
             "args": [
                 "main",
-                "--task", "打开 bilibili.com，搜索 '老王在中国' 这个Up主的播放量最高的视频",
-                "--task-id", "bilibili",
-                "--start-url", "https://www.bilibili.com/",
+                "--task", "在小红书上找到最近一场世界杯的比赛",
+                "--task-id", "rebNote",
+                "--start-url", "https://www.google.com/",
                 "--config", "base.yaml",
+                "--config", "local_browser.yaml",
                 "--config", "custom_openrouter.yaml",
                 "--output-dir", "outputs/default",
-                "--debug"
             ],
             "console": "integratedTerminal",
             "justMyCode": true,
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/src",
-                "OPENAI_API_KEY": "dummy",
-                "OPENROUTER_API_KEY": "sk-858c55a7eae046fa89274b7aaee8d5cc"
             },
             "cwd": "${workspaceFolder}"
         },
