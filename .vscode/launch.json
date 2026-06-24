@@ -2,15 +2,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: webwright main (bilibili 默认)",
+            "name": "Python: webwright main",
             "type": "debugpy",
             "request": "launch",
             "module": "webwright.run.cli",
             "args": [
                 "main",
-                "--task", "在小红书上找到最近一场阿根廷队世界杯的比赛，并说明比赛的结果，如比分，阵容配置，射门情况等",
-                "--task-id", "rebNote",
-                "--start-url", "https://www.xiaohongshu.com/explore",
+                "--task", "找到bilibili播放量最高的langchain教程",
+                "--task-id", "langchain_Bilibili",
+                "--start-url", "https://www.bilibili.com/",
                 "--config", "base.yaml",
                 "--config", "custom_openrouter.yaml",
                 "--output-dir", "outputs/default",

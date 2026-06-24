@@ -6,3 +6,6 @@ outputs/
 .claude/
 .venv/
 venv/
+node_modules/
+dist/
+cache/

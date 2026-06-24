@@ -14,5 +14,5 @@ model:
   # openrouter_endpoint: https://api.deepseek.com/chat/completions
 
   # Qwen
-  model_name: qwen3.5-35b-a3b
+  model_name: qwen3.5-flash
   openrouter_endpoint: https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions

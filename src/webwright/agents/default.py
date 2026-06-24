@@ -91,6 +91,7 @@ class DefaultAgent:
         self.n_format_errors = 0
 
     def _debug_dir(self) -> Path | None:
+        """ 获取debug目录 """
         if self.config.output_path is None:
             return None
         return self.config.output_path.parent / "debug"
@@ -102,6 +103,11 @@ class DefaultAgent:
         assistant_message: dict[str, Any],
         outputs: list[dict[str, Any]] | None = None,
     ) -> None:
+        """ 写入debug文件
+
+            debug/steps/steps_xxxx.json: 包含thought、bash_command、raw_response、done 状态、outputs（含 observation）等
+            debug/steps.md: 以 append 追加 模式写入，逐步构建出一个完整的 markdown 执行日志
+        """
         if not self.config.debug_log:
             return
         debug_dir = self._debug_dir()
