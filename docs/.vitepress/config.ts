@@ -4,6 +4,7 @@ export default withMermaid({
   title: 'Webwright 文档',
   description: 'Webwright 源码分析与学习笔记',
   lang: 'zh-CN',
+  base: '/webwright/',
   cleanUrls: true,
   ignoreDeadLinks: true,
 
